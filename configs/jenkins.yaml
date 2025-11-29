@@ -1,0 +1,38 @@
+jenkins:
+  systemMessage: "Jenkins configurado con IaC y Docker-in-Docker para el Laboratorio"
+  numExecutors: 0 
+  mode: NORMAL
+  scmCheckoutRetryCount: 2
+
+security:
+  globalJobDslSecurityConfiguration:
+    useScriptSecurity: false
+
+  realm:
+    local:
+      allowsSignup: false
+      users:
+       - id: "admin"
+         password: "admin" 
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+
+clouds:
+  - docker:
+      name: "dockercito" 
+      dockerApi:
+        dockerHost:
+          uri: "tcp://dind:2375" 
+      templates:
+        - labelString: "docker-agent" 
+          name: "agente-basico"
+          remoteFs: "/home/jenkins/agent"
+          connector:
+            attach:
+              user: "jenkins"
+          dockerTemplateBase:
+            image: "jenkins/agent" 
+            cpuProvisioningStrategy:
+              noLdap: {}
