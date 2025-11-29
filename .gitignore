@@ -1,0 +1,9 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs y temporales de Jenkins (si se mapean localmente)
+jenkins_home/
+*.log
+*.tmp
+secrets/
