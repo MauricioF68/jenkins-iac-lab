@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+ 
+  jenkins:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: jenkins_server
+    ports:
+      - "8080:8080"   
+      - "50000:50000" 
+    volumes:
+      
+      - ./configs/jenkins.yaml:/var/jenkins_home/casc_configs/jenkins.yaml
+    networks:
+      - jenkins-network
+    restart: on-failure
+
+  
+  dind:
+    image: docker:27-dind
+    container_name: dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: "" 
+    ports:
+      - "2375:2375"
+    networks:
+      - jenkins-network
+    restart: always
+
+# Definición de la red (La solución a la tarea del profesor)
+networks:
+  jenkins-network:
+    driver: bridge
