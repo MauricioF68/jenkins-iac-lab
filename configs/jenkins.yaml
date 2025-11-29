@@ -1,10 +1,8 @@
 jenkins:
-  systemMessage: "Jenkins configurado con IaC y Docker-in-Docker para el Laboratorio"
+  systemMessage: "Jenkins Lab - Version Final"
   numExecutors: 0
   mode: NORMAL
-  scmCheckoutRetryCount: 2
-
-  # CORRECCIÓN: La seguridad va dentro del bloque 'jenkins'
+  
   securityRealm:
     local:
       allowsSignup: false
@@ -16,26 +14,19 @@ jenkins:
     loggedInUsersCanDoAnything:
       allowAnonymousRead: false
 
-# Configuración de seguridad global para scripts
-security:
-  globalJobDslSecurityConfiguration:
-    useScriptSecurity: false
-
-# Configuración del Cloud
-clouds:
-  - docker:
-      name: "dockercito"
-      dockerApi:
-        dockerHost:
-          uri: "tcp://dind:2375"
-      templates:
-        - labelString: "docker-agent"
-          name: "agente-basico"
-          remoteFs: "/home/jenkins/agent"
-          connector:
-            attach:
-              user: "jenkins"
-          dockerTemplateBase:
-            image: "jenkins/agent"
-            cpuProvisioningStrategy:
-              noLdap: {}
+  # CORRECCIÓN: 'clouds' ahora está dentro de 'jenkins' (con sangría)
+  clouds:
+    - docker:
+        name: "dockercito"
+        dockerApi:
+          dockerHost:
+            uri: "tcp://dind:2375"
+        templates:
+          - labelString: "docker-agent"
+            name: "agente-basico"
+            remoteFs: "/home/jenkins/agent"
+            connector:
+              attach:
+                user: "jenkins"
+            dockerTemplateBase:
+              image: "jenkins/agent"
